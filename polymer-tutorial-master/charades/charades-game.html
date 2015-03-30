@@ -1,0 +1,322 @@
+ <link rel="import" href="../components/polymer/polymer.html">
+
+  <link href="../components/core-icons/av-icons.html" rel="import">
+  <link href="../components/paper-fab/paper-fab.html" rel="import">
+
+  <link href="../components/core-animated-pages/core-animated-pages.html" rel="import">
+  <link href="../components/core-animated-pages/transitions/slide-up.html" rel="import">
+  <link href="../components/core-animated-pages/transitions/list-cascade.html" rel="import">
+
+  <link href="../components/paper-button/paper-button.html" rel="import">
+  <link href="../components/paper-input/paper-input.html" rel="import">
+
+	<!-- new-game-form -->
+	<link rel="import" href="new-game-form.html">
+	<link rel="import" href="join-game-form.html">
+
+  <polymer-element name="charades-game" attributes="page">
+  <template>
+
+    <style>
+      core-animated-pages {
+        height: 100%;
+      }
+
+      .container{
+        background-color: #ffff8d;
+      }
+
+      section {
+        overflow: hidden;
+      }
+
+/*      .fab {
+        position: absolute;
+        fill: #fff;
+      }
+
+      .fab-0 {
+        bottom: 50px;
+        right: 24px;
+      }
+
+      .fab-1 {
+        top: 210px;
+        right: 24px;
+      }*/
+
+      paper-fab {
+        /*background-color: #ff4081;*/
+        float:left; position: absolute
+      }
+
+      .content {
+        background-color: #00bbd3;
+      }
+
+      .top {
+        box-sizing: border-box; 
+        height: 80px;
+        background-color: #ffeb3b;
+        padding: 24px;
+        color: #fff;
+        font-size: 32px;
+      }
+      h1{
+      	background-color: #00bbd3;
+      }
+
+      h1, h2{
+      	/*background-color: #00bbd3;*/
+      	width: 100%;
+      	text-align: center;
+      	/*height: 50px;*/
+      	color: #fff;
+      	padding: 30px;
+        font-size: 48px;
+        margin: 0;
+      }
+
+      h4{
+      	background-color: #00bbd3;
+      	color: #fff;
+      	padding-top: 10px;
+      }
+
+      .title {
+        /*box-sizing: border-box;
+        height: 240px;
+        position: relative;
+        color: #fff;
+        padding: 48px;
+        font-size: 48px;*/
+      }
+
+      .title.categories {
+        /*background-color: #00bbd3;
+        margin-bottom: 2px;*/
+      }
+
+      .title.questions {
+        /*background-color: #ffeb3b;*/
+      }
+
+      .middle {
+        /*background-color: #fafafa;
+        color: #3f3f3f;
+        padding: 24px 48px;
+        font-size: 24px;
+        line-height: 1.5;*/
+      }
+
+      .footer {
+        height: 80px;
+      }
+
+      .avatar {
+        height: 80px;
+        width: 80px;
+        background-color: #ff80ab;
+      }
+
+      .footer-right, .score {
+        border-top: 1px solid #ccc;
+        background-color: #fff;
+        padding: 30px;
+      }
+
+      .tile {
+        /*box-sizing: border-box;*/
+        /*float: left;
+        height: 200px;*/
+        /*width: 49%;*/
+        /*margin: 3px;*/
+      }
+
+      .tile-bottom {
+        padding: 8px;
+        color: #fff;
+      }
+
+      paper-button{
+      	background-color: #00bbd3;
+        margin: 10px;
+        text-transform: lowercase;
+        height: 200px;
+        width: 200px;
+      }
+
+      .white-text{
+        color: #fff;
+      }
+
+      .red{
+      	background-color: red;
+      }
+      .blue{
+      	background-color: blue;
+      }
+      .green{
+      	background-color: green;
+      }
+      .orange{
+      	background-color: orange;
+      }
+      .grey{
+      	background-color: grey;
+      }
+      .purple{
+      	background-color: purple;
+      }
+      .yellow{
+      	background-color: yellow;
+      }
+      .brown{
+      	background-color: brown;
+      }
+      .cyan{
+      	background-color: cyan;
+      }
+    </style>
+
+    
+
+<core-animated-pages selected="{{page}}" transitions="hero-transition slide-up slide-down cross-fade list-cascade" on-core-animated-pages-transition-end="{{complete}}">
+
+	<section layout vertical center>
+
+         
+        <h1 hero  cross-fade>
+        	{{x_title}}
+        </h1>
+        
+
+        <div layout vertical center>
+        	
+
+	    	<paper-button raised hero hero-id="create-new-game" on-tap="{{createNewGame}}"  >
+	    		<h4>{{x_create_game}}</h4>
+	    	</paper-button>
+	    	<paper-button raised hero hero-id="join-game" on-tap="{{joinGame}}">
+	    		<h4>{{x_join_game}}</h4>
+	    	</paper-button>
+
+        </div>
+	
+	</section>
+
+
+      <section layout vertical >
+        <div class="content {{teamcolor}} " flex layout vertical  cross-fade slide-up >
+        	<paper-fab icon="arrow-back" on-tap="{{homePage}}" hero hero-id="create-new-game" cross-fade></paper-fab>
+			<div flex layout vertical center>
+				<h2>{{x_create_game}}</h2>
+				<content select="new-game-form" ></content>
+			</div> 
+        </div>
+      </section>
+
+
+
+      <section layout vertical >
+        <div class="content" flex layout vertical  cross-fade slide-up>
+        	<paper-fab icon="arrow-back" on-tap="{{homePage}}" hero hero-id="join-game" cross-fade></paper-fab>
+			<div flex layout vertical center>
+				<h2>{{x_join_game}}</h2>
+				<content select="join-game-form" ></content>
+			</div> 
+        </div>
+      </section>
+
+
+    </core-animated-pages>
+
+  </template>
+  <script>
+
+/*
+this.f­ire­('o­uch', {msg: 'That hurt!'});
+// fire(i­nType, inDetail, inToNode)
+docume­nt.q­ue­ryS­ele­cto­r('­ouc­h-b­utt­on'­).a­ddE­ven­tLi­ste­ner­('o­uch', functi­on(e) { consol­e.l­og(­e.type, e.deta­il.m­sg); // "­ouc­h" "That hurt!" });
+Listening outside the element
+<ou­ch-­button on-ouch="{{ myMethod }}">­</o­uch­-bu­tto­n>Using on-* handlers within another Polymer element
+
+*/
+    Polymer('charades-game', {
+
+      x_username: "username",
+      x_title: "charades game for the mo foos",
+      x_create_game: "create a new game",
+      x_join_game: "join a game",
+      x_players: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+      x_timeperperson: [1, 2, 3, 4, 5, 6],
+      teamcolor: "",
+
+      page: 0,
+
+      ready: function() {
+        //this.numberOfPlayers();
+        /*if(this.$.new_game_btn.id == "new_game_btn")
+        	this.page = 1;
+        else
+        	this.page = 2;*/
+
+        //this.$.new_game_btn.tap();
+       // this.page = 1;
+       	//this.page = {{page}};
+        /*docume­nt.q­ue­ryS­ele­cto­r('­new-game-form'­).a­ddE­ven­tLi­ste­ner­('testing', functi­on(e) { 
+        	consol­e.l­og(­e); 
+        });*/
+
+       /* var new_game_form = document.querySelector('new-game-form');
+
+        new_game_form.addEventListener('goback', function(x) {
+        console.log("ASdasd");
+      });*/
+
+      },
+
+      pageChanged: function(oldVal, newVal) {
+       // console.log('the page is', newVal);
+      },
+
+      teamcolorChanged: function(oldVal, newVal) {
+        //console.log('the color is', newVal);
+        //console.log(this.$.container.setAttribute("class", "red"));
+      },
+
+      transition: function(e) {
+      	//this.page = 1;
+      	//console.log(this.$.new_game_btn);
+      	//alert(1);
+      	/*alert(s);*/
+        //alert(this.page);
+        /*if (this.page === 2) {
+          this.page = 0;
+        } else {
+          this.page += 1;
+        }*/
+      } //,
+
+      ,
+
+      createNewGame: function(e){
+      	this.page = 1;
+      },
+
+      joinGame: function(e){
+      	this.page = 2;
+      },
+
+      homePage: function(e){
+      	this.page = 0;
+      }
+
+      /*setPage: function(e){
+      	console.log(1);
+      }*/
+
+    });
+
+  </script>
+  </polymer-element>

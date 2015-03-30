@@ -1,0 +1,57 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<!-- <link href="../components/paper-input/paper-input.html" rel="import"> -->
+
+<polymer-element name="join-game-form" >
+  <template>
+    <style>
+    	.container{
+    		/*background: red*/
+    	}
+    	.container  div{
+    		margin: 15px;
+    	}
+    </style>
+
+
+
+    <div class="container"  horizontal layout start slide-up list-cascade>
+
+    	<!-- <div>
+    		<paper-fab icon="arrow-back" on-tap="{{backTap}}" hero></paper-fab>
+    	</div> -->
+
+    	<div  vertical layout  end>
+	    	<div>
+	    		<paper-input label="{{x_username}}" floatingLabel="true"></paper-input>
+	    	</div>
+			<div>
+				<label for="newgroupteamcolor">Pick your team color</label>
+				<select class="u-full-width" id="newgroupteamcolor" class="teamcolors">
+	              <template repeat="{{i in colors}}">
+	                <option>{{i}}</option>
+	              </template>
+				</select>
+			</div>
+			<div>
+				<paper-button raised>{{x_join_game_save}}</paper-button>
+			</div>
+		</div>
+
+    </div>
+
+    
+
+  </template>
+  <script>
+  Polymer('join-game-form', {
+      colors: ["red", "green", "blue", "purple", "yellow", "orange", "cyan"],
+      x_join_game_save: "join game",
+      x_username: "username",
+      backTap: function(e,d,s) {
+      	  /*s.templateInstance.model.goback = "efg";*/
+      	  s.templateInstance.model.fire("goback");
+          /*console.log(s.templateInstance.model.goback);*/
+      }
+  });
+  </script>
+</polymer-element>
