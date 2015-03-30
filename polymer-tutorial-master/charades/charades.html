@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Basic Page Needs
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta charset="utf-8">
+	<title>Charades game</title>
+	<meta name="description" content="">
+	<meta name="author" content="Fathi Abdoon">
+
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+	<style>
+	/*custom styling*/
+
+	.step1buttons{
+		margin-top: 20px;
+		text-align:center;
+		/*border: 1px solid #ccc;*/
+	} 
+
+	#ngwrap, #jgwrap, .wrap{
+		display: none
+	}
+	.center{
+		text-align: center;
+	}
+
+/*	html{
+		background: red;
+	}
+*/
+	.fullscreen{
+		position: absolute;
+		height: 100%; 
+		width: 100%;
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+
+	}
+
+	#waitingareawrap{
+		margin-top: 50px;
+	}
+	.barcode{
+		position: fixed;
+   		top: 0;
+    	right: 0;
+    	padding: 4px;
+	}
+	#startingpointwrap{
+		/*padding: 5px;*/
+	}
+
+	#startingpointwrap button.start{
+		position: relative; 
+		left: 50%;
+		margin-left: -50px;   
+		text-align: center; 
+	}
+
+	#word{
+		position: relative;
+		margin-top: -15px;
+		text-align: center; 
+		font-size: 40px
+	}
+
+	.startword{
+		/*background:blue; */
+		position: absolute; 
+		width: 100%; 
+		top: 50%; 
+		height: 38px; 
+		margin-top: -19px;
+	}
+
+	#startingpointwrap button.pass{
+		left: 8px;
+	    margin-top: -47px;
+	    position: fixed;
+	    top: 100%;
+	    background: #ddd;
+    	border-color: #ddd;
+    	color: #333;
+	}
+
+	#startingpointwrap button.gotit{
+		left: 100%;
+		margin-left: -113px;
+	    margin-top: -47px;
+	    position: fixed;
+	    top: 100%;
+	    background: green;
+    	border-color: green;
+	}
+
+	.pass{
+		display: none;
+	}
+	.gotit{
+		display: none
+	}
+
+
+	h5{
+		/*color: #fff;*/
+	}
+
+	#startingpointwrap .score{
+		position: fixed;
+		width: 100%;
+		top: 100%;
+		margin-top: -40px;
+		color: #000;
+		background: #fff
+	}
+
+	#startingpointwrap .score span{
+		padding:1px 5px;
+		margin:1px 5px;
+	}
+
+	.red h5, .green h5, .blue h5, .purple h5{
+		color: #fff
+	}
+
+	.yellow h5, .orange h5, .cyan h5{
+		color: #000
+	}
+
+	.red, .green, .blue, .pink, .yellow, .orange, .cyan, .purple{
+		/*padding:1px 5px;
+		margin:1px 5px;*/
+	}
+	.red{
+		background: red;
+	}
+	.green{
+		background: green;
+	}
+	.pink{
+		background: pink;
+	}
+	.blue{
+		background: blue;
+	}
+	.yellow{
+		background: yellow;
+	}
+	.purple{
+		background: purple;
+	}
+	.cyan{
+		background: cyan;
+	}
+	.orange{
+		background: orange;
+	}
+	</style>
+
+
+	<!-- Favicon
+	–––––––––––––––––––––––––––––––––––––––––––––––––– 
+	<link rel="icon" type="image/png" href="../../dist/images/favicon.png">-->
+
+</head>
+	<body>
+
+
+
+
+
+		<div class="container title">
+			<section class="header">
+				<h1>Charades</h1>
+				<div id="stopwatch"></div>
+			</section>
+		</div>
+
+
+
+
+
+
+		<!-- first step is to show the option to the user -->
+		<div class="container wrap" id="showoptionswrap">
+			<!-- 	<div class="one-third column">&nbsp;</div> -->
+				<div class="step1buttons">
+					<p>
+						<button class="button" id="ng">Create a new group</button>
+					</p>
+					<p>
+						<button class="button" id="jg">Join a group</button>
+					</p>
+				</div>
+				<!-- <div class="one-third column">&nbsp;</div> -->
+				<div>
+					Instructions: <br/>
+					1. Before you start, you have to discuss with your fellow players and pick teams <br/>
+					2. Create a new group picking your team color and username <br/>
+					3. Rest of the players should join a group and scan or type the code (from step 2) <br/>
+					4. When all the players join, the player that wants to play clicks start and off you go bugger!<br/>
+					5. Thats it! <br/>
+					you can share this and donate some btc if you like this game <br/>
+				</div>
+		</div><!-- #showoptionswrapper -->
+
+
+
+
+
+
+
+
+
+		<!-- this will be a form for creating new group -->
+		<div class="container wrap" id="ngwrap">
+			<form>
+				<div class="row">
+					<label for="ngusername">Username</label>
+					<input class="u-full-width username" type="text" placeholder="Username" id="ngusername">
+					<label for="numberofpeople">Number of people playing</label>
+					<select class="u-full-width" id="numberofplayers">
+						<option></option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+						<option>11</option>
+						<option>12</option>
+						<option>13</option>
+					</select>
+<!-- 					<label for="numberofpeople">Number of teams</label>
+					<select class="u-full-width" id="numberofteams">
+						<option></option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+						<option>11</option>
+						<option>12</option>
+						<option>13</option>
+					</select> -->
+					<label for="timeperperson">Time per person</label>
+					<select class="u-full-width" id="timeperperson">
+						<option></option>
+						<option value="1">1 min</option>
+						<option value="2">2 min</option>
+						<option value="3">3 min</option>
+						<option value="4">4 min</option>
+						<option value="5">5 min</option>
+						<option value="6">6 min</option>
+					</select>
+<!-- 					<label for="ngcode">Code</label>
+					<input class="u-full-width code" disabled type="text" placeholder="Code" id="ngcode"> -->
+					<label for="newgroupteamcolor">Pick your team color</label>
+					<select class="u-full-width" id="newgroupteamcolor" class="teamcolors">
+						<option>red</option>
+						<option>green</option>
+						<option>blue</option>
+						<option>purple</option>
+						<option>yellow</option>
+						<option>orange</option>
+						<option>cyan</option>
+					</select>
+					<!-- <label>
+						<input type="checkbox" id="assignteamsrandom">
+						<span class="label-body">Assign teams randomly</span>
+					</label> -->
+					<button class="button-primary submit">Submit</button>
+					<button class="button cancel">Cancel</button>
+				</div><!-- .row -->
+			</form>
+		</div><!-- #ngwrap -->
+
+
+
+
+
+		<div class="container wrap" id="jgwrap">
+			<form>
+				<div class="row">
+					<label for="jgusername">Username</label>
+					<input class="u-full-width username" type="text" placeholder="Username" id="jgusername">
+					<label for="joingroupteamcolor">Pick your team color</label>
+					<select class="u-full-width" id="joingroupteamcolor" class="teamcolors">
+						<option>red</option>
+						<option>green</option>
+						<option>blue</option>
+						<option>purple</option>
+						<option>yellow</option>
+						<option>orange</option>
+						<option>cyan</option>
+					</select>
+					<label for="jgcode">Code</label>
+					<input class="u-full-width code" type="text" placeholder="Code" id="jgcode">
+					<button class="button-primary submit">Submit</button>
+					<button class="button cancel">Cancel</button>
+				</div>
+			</form>
+		</div><!-- #jgwrap -->
+
+
+
+
+
+
+
+		<div class="container center wrap" id="waitingareawrap">
+			<h2>Waiting for others to join</h2>
+			<h4 class="code"></h4>
+			<div id="waitingarea_barcode" class="barcode"></div>
+			<h5>who is in here <span id="waitingareacounter"></span></h5>
+			<h5 id="waitingareaplayers"></h5>
+		</div><!-- #showcodeforgroupwrap -->
+
+
+
+
+
+
+
+		<div class="wrap fullscreen" id="startingpointwrap" >
+			<h5 id="startingpointplayer"></h5>
+			<button class="button-primary pass">Pass</button>
+			<button class="button-primary gotit">GOT IT</button>
+
+			<div id="startingpointwrap_barcode" class="barcode"></div>
+
+			<div class="startword">
+				<button class="button-primary start">Start</button>
+				<div id="word"></div>
+			<div>
+
+
+			<h5 class="score"></h5>
+		</div><!-- #showcodeforgroupwrap -->
+
+		
+
+		<input type="hidden" value="" id="hiddencode">
+
+
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<script src="https://raw.githubusercontent.com/davidshimjs/qrcodejs/master/qrcode.min.js"></script>
+		<script src="https://raw.githubusercontent.com/jchavannes/jquery-timer/master/jquery.timer.js"></script>
+		<!--<script src="http://arasatasaygin.github.io/is.js/scripts/is.js"></script>-->
+		<script src="/socket.io/socket.io.js"></script>
+
+		<script>
+
+			jQuery(function($){
+
+
+
+/**
+ * jQuery Timer isn't natively a stopwatch, it just helps with
+ * building one. Time must be incremented manually.
+ *
+ * The increment time is in milliseconds, so an input time of
+ * 1000 equals 1 time per second.  This example uses an
+ * increment time of 70 which is about 14 times per second.
+ *
+ * The timer function converts the current time to a string
+ * and outputs to the stopwatch element, $stopwatch.
+ */
+	function Example1() {
+
+	    // Stopwatch element on the page
+	    var $stopwatch;
+	    
+	    // Timer speed in milliseconds
+	    var incrementTime = 10;
+
+	    // Current timer position in milliseconds
+	    var currentTime = 0;
+	    
+	    // Start the timer
+	    $(function() {
+	        $stopwatch = $('#stopwatch');
+	        Example1.Timer = $.timer(updateTimer, incrementTime, true);  
+	    });
+
+	    // Output time and increment
+	    function updateTimer() 
+	    {
+	        var timeString = formatTime(currentTime);
+	        $stopwatch.html(timeString);
+	        currentTime += incrementTime;
+
+	        if(currentTime == (3000))
+	        {
+
+	        	/*console.log(currentTime);*/
+	        	/*currentTime = 0;*/
+	        	Example1.Timer.stop().once();
+
+	        	/*setTimeout(function(){
+	        		Example1.Timer.toggle();
+	        	}, 3000);  */
+	        } 
+	    }//updateTimer() 
+
+	    // Reset timer
+	    this.resetStopwatch = function() {
+	        currentTime = 0;
+	        Example1.Timer.stop().once();
+	    };
+
+	}//example1
+
+//Example1();
+
+
+				//console.log(8/3);
+				var socket 					= io.connect(),
+
+
+					url						= "http://localhost:3000/",
+					hash	 				= "",
+					hiddencode				= $("#hiddencode"),
+
+					//colors					= ["red", "green", "blue", "purple", "yellow", "orange", "cyan"],
+					teamcolors				= $(".teamcolors"),
+
+		 			allwraps				= $(".wrap"),
+		 			showoptionswrap 		= $("#showoptionswrap"),
+		 			html 					= $("html"),
+
+		 			/*waiting area*/
+		 			waitingareawrap 		= $("#waitingareawrap"),
+		 			waitingarea_code		= $("#waitingareawrap .code"),
+		 			small_barcode 			= 90;
+		 			big_barcode 			= 128;
+
+	 			;
+	 			
+
+
+
+	 			/******* create new group section *******/
+
+	 			var ngwrap 					= $("#ngwrap"),
+	 				ng_btn					= $("#ng"),
+	 				ng_submit_btn			= $("#ngwrap .submit"),
+	 				ng_cancel_btn			= $("#ngwrap .cancel"),
+	 				ng_username 			= $("#ngwrap .username"),
+	 				ng_players				= $("#numberofplayers"),
+	 				//ng_teams				= $("#numberofteams"),
+	 				ng_timeperperson		= $("#timeperperson"),
+	 				//ng_assignteam			= $("#assignteamsrandom"),
+	 				ng_teamcolor			= $("#newgroupteamcolor");
+
+	 			/*when create new group btn is clicked do something*/
+				ng_btn.click(function(e){
+					e.preventDefault();
+					closewrapandshow(ngwrap);
+				});
+
+				/*if submit was clicked on create new group form */
+				ng_submit_btn.click(function(e){
+					e.preventDefault();
+
+					var validate = true;
+
+					var ng_username_v 		= ng_username.val().trim();
+					var ng_players_v 		= ng_players.val().trim();
+					var ng_color_v 			= ng_teamcolor.val().trim();
+					//var ng_teams_v 			= ng_teams.val().trim();
+					var ng_timeperperson_v 	= ng_timeperperson.val().trim();
+					//var ng_assignteam_v 	= ng_assignteam.is(":checked");
+
+					/*validating client side as much as possible
+		 			if(ng_username.val().trim().length == 0)
+		 			{
+		 				checkifempty(ng_username);
+		 				validate = false;
+		 			}
+		 			else
+		 			{}*/
+
+		 			//if(ng_username.val().trim().length)
+		 			/*console.log(ng_players.val());
+		 			console.log(ng_teams.val());
+		 			console.log(ng_timeperperson.val());
+		 			console.log(ng_code.val());
+		 			console.log(ng_assignteam.val());*/
+
+		 			/*when validation passes, emit values*/
+		 			if(validate)
+		 			{
+		 				socket.emit("new group", 
+		 					{username: ng_username_v, players: ng_players_v, time: ng_timeperperson_v, color: ng_color_v}, function(data){
+		 							if(!data)
+		 							{
+		 								alert("This code is already in use, please use another code");
+		 							}
+		 					});
+		 			}
+
+				});//ng_submit_btn
+
+				/*if cancel was clicked on create new group form */
+				ng_cancel_btn.click(function(e){
+					e.preventDefault();
+					closewrapandshow(showoptionswrap);
+				});
+
+	 			//give other players this code
+	 			socket.on("new group code", function(data){
+	 				closewrapandshow(waitingareawrap);
+	 				waitingarea_code.html("code: \"" + data + "\"");
+	 			});
+
+
+				/** testing **/
+				$("#ngusername").val("fathi");
+				$("#numberofplayers").val(3);
+				$("#numberofteams").val(2);
+				$("#timeperperson").val(1);
+				ng_teamcolor.val("cyan");
+				//$("#assignteamsrandom").prop('checked', true);
+				//$("#ngwrap .code").val("brown people");
+				//ng_btn.click();
+
+				/******* EO create new group section *******/
+
+
+
+
+
+
+
+
+
+
+
+
+
+				/******* join group section *******/
+
+				var jgwrap 					= $("#jgwrap"),
+					jg_btn					= $("#jg"),
+	 				jg_submit_btn			= $("#jgwrap .submit"),
+	 				jg_cancel_btn			= $("#jgwrap .cancel"),
+	 				jg_username 			= $("#jgwrap .username"),
+	 				jg_code					= $("#jgwrap .code"),
+	 				jg_teamcolor			= $("#joingroupteamcolor");
+
+	 			/*when join group btn is clicked do something*/
+				jg_btn.click(function(e){
+					e.preventDefault();
+					closewrapandshow(jgwrap);
+				});
+
+				/*if submit was clicked on join group form */
+				jg_submit_btn.click(function(e){
+					e.preventDefault();
+
+					var validate = true;
+
+					var jg_username_v 		= jg_username.val().trim();
+					var jg_color_v 			= jg_teamcolor.val().trim();
+					var jg_code_v 			= jg_code.val().trim();
+
+					/*validating client side as much as possible
+		 			if(jg_username.val().trim().length == 0)
+		 			{
+		 				checkifempty(jg_username);
+		 				validate = false;
+		 			}
+		 			else
+		 			{}*/
+
+		 			if(validate)
+		 			{
+		 				//whether is correct or not i dont care
+		 				hiddencode.val(jg_code_v);
+
+		 				//console.log(getCode());
+
+		 				socket.emit("join group", 
+		 					{username: jg_username_v, room: jg_code_v, color: jg_color_v}, function(data){
+	 							if(data.length != 0)
+	 							{
+	 								alert(data);
+	 							}
+	 							else
+	 							{
+	 								
+	 							}
+		 					});
+		 			}
+
+				}); //jg_submit_btn
+
+
+				/*if cancel was clicked on join group form */
+				jg_cancel_btn.click(function(e){
+					e.preventDefault();
+					closewrapandshow(showoptionswrap);
+				});
+
+				$("#jgusername").val("tracy");
+				jg_teamcolor.val("red");
+				//$("#jgwrap .code").val("");
+				//jg_btn.click();
+
+				/******* EO join group section *******/
+
+
+
+
+
+
+
+
+
+
+
+
+
+				/******* waiting area *******/
+
+				var waitingarea_barcode 		= document.getElementById("waitingarea_barcode"),
+					startingpointwrap_barcode 	= document.getElementById("startingpointwrap_barcode");
+				
+
+	 			var waitingareaplayers		= $("#waitingareaplayers"),
+	 				waitingareacounter		= $("#waitingareacounter"),
+	 				startingpointwrap		= $("#startingpointwrap"),
+	 				startingpointscores		= $("#startingpointwrap .score"),
+	 				startingpointplayer		= $("#startingpointplayer"),
+	 				startingpointbarcode 	= $("#startingpointwrap_barcode"),
+	 				startbtn				= $(".start"),
+	 				passbtn					= $(".pass"),
+	 				gotitbtn				= $(".gotit"),
+	 				worddiv					= $("#word");
+
+
+				/*waiting area*/
+	 			socket.on("show players in waiting room", function(data){
+	 				//console.log("client: show players in waiting room");
+
+	 				hiddencode.val(data.room);
+	 				closewrapandshow(waitingareawrap);
+	 				
+
+	 				waitingarea_code.html("code: \"" + getCode()+ "\"");
+
+	 				waitingarea_barcode.innerHTML = "";
+	 				createbarcode("waitingarea_barcode", big_barcode, getCode(), "#fff");
+
+
+	 				waitingareaplayers.html("");
+
+	 				for(var i=0; i<data.listofplayers.length; i++)
+	 				{
+	 					waitingareaplayers.append(data.listofplayers[i] + "<br/>");
+	 				}
+
+	 				//console.log((data.numberofplayers - data.listofplayers.length));
+
+	 				waitingareacounter.html("(" + (data.numberofplayers - data.listofplayers.length) + " left)"  );
+
+	 				//console.log(waitingareacounter.html());
+
+	 				//if((data.numberofplayers - data.listofplayers.length) == 0 )
+	 				//{
+	 					//console.log("client: am ready, go ahead, pick our color");
+	 					//all players are here.. time to start the game
+	 				//	socket.emit("am ready, go ahead", {code: getCode()});
+	 				//	playingwindow(false);
+	 				//}
+
+	 			});//EO show players in waiting room
+
+
+
+
+	 			socket.on("go to the game page", function(data){
+	 				//console.log("client: go to the game page");
+
+	 				//worddiv.hide();
+	 				worddiv.fadeIn();
+	 				worddiv.html("");
+	 				startbtn.show();
+	 				hidetitle();
+	 				startingpointplayer.html(data.username);
+	 				html.removeClass();
+	 				html.addClass(data.color);
+
+	 				startingpointwrap_barcode.innerHTML = "";
+	 				createbarcode("startingpointwrap_barcode", small_barcode, getCode(), data.color);
+
+	 				var colorkeys = Object.keys(data.totalscore);
+	 				startingpointscores.html("scores:");
+	 				for(var i = 0; i < colorkeys.length; i++)
+	 				{
+	 				 	startingpointscores.append("<span class=\""+colorkeys[i]+"\">" + colorkeys[i] + ": " + data.totalscore[colorkeys[i]] + "</span>");
+	 				}
+
+	 				closewrapandshow(startingpointwrap);
+
+	 			});//EO go to the game page
+
+	 			socket.on("hide start button", function(data){
+	 				startbtn.hide();
+	 				worddiv.html(data.currentplayer + " is playing");
+	 			});
+
+	 			socket.on("show word", function(data){
+	 				 
+
+	 				worddiv.fadeIn();
+	 				startbtn.hide();
+	 				worddiv.html(data.currentplayer + ": " + data.word);
+
+	 				//setTimeout(function(){
+	 					worddiv.fadeOut(2000);
+	 					//startbtn.show();
+	 				//}, 2000);
+
+	 			});
+
+	 			//when the start button is clicked
+	 			startbtn.click({type: "s"}, gettingword);
+
+	 			gotitbtn.click({type: "g"}, gettingword);
+
+	 			passbtn.click({type: "p"}, gettingword);
+
+	 			worddiv.click(function(){
+	 				socket.emit("reset the game page", {code: getCode()});
+	 				playingwindow(false);
+	 			});
+
+
+	 			/******* EO waiting area *******/
+
+	 			function getCode(){
+	 				return hiddencode.val();
+	 			}
+
+	 			function gettingword(x){
+
+	 				var type = x.data.type;
+	 				
+	 				socket.emit("get me a word", {type: type}, function(data){
+	 					if(data.length != 0)
+	 					{
+	 						worddiv.html(data);
+	 						playingwindow(true);
+	 						//setTimeout(function(){
+	 						//	playingwindow(false);
+	 						//}, 2000);
+	 					}
+	 				}); 
+
+	 			}
+
+	 			function playingwindow(x){
+
+	 				if(x)
+	 				{
+ 						startbtn.hide();
+ 						worddiv.show();
+ 						passbtn.show();
+ 						gotitbtn.show();
+ 						startingpointscores.hide();
+ 						startingpointbarcode.hide();
+	 				}
+	 				else
+	 				{
+		 				gotitbtn.hide();
+		 				passbtn.hide();
+		 				startbtn.show();
+		 				worddiv.show();
+		 				startingpointscores.show();
+		 				startingpointbarcode.show();
+	 				}
+
+
+	 			}
+
+
+
+				if(window.location.hash) {
+				      hash = window.location.hash.substring(1);
+				  }
+
+ 
+
+	 			//someone scanned the bar code to get this page, if not show options
+	 			if(hash.length == 0)
+	 			{
+	 				closewrapandshow(showoptionswrap);
+	 			}
+	 			else
+	 			{
+	 				jg_code .val(hash);
+	 				closewrapandshow(jgwrap);
+	 			} 
+
+
+					/*hidetitle();
+	 				startingpointplayer.html("fathi");
+	 				html.removeClass();
+	 				html.addClass("red");
+					closewrapandshow(startingpointwrap);*/
+
+
+
+
+				// Common functions
+				function pad(number, length) {
+				    var str = '' + number;
+				    while (str.length < length) {str = '0' + str;}
+				    return str;
+				}
+				function formatTime(time) {
+				    time = time / 10;
+				    var min = parseInt(time / 6000),
+				        sec = parseInt(time / 100) - (min * 60),
+				        hundredths = pad(time - (sec * 100) - (min * 6000), 2);
+				    return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+				}
+
+
+	 			function createbarcode(x, s, c, r){
+					var qrcode = new QRCode(document.getElementById(x), {
+						text: url + "#"+ c,
+						width: s,
+						height: s,
+						colorDark : "#000",
+						colorLight : r
+					});
+	 			}
+
+
+				function hidetitle(){
+					$(".title").hide();
+				}
+
+				function showtitle(){
+					$(".title").show();
+				}
+
+				function checkifempty(x){
+					x.css("color","red");
+				}
+
+	 			//this function will be used to hide all divs and show one of them
+	 			function closewrapandshow(y){
+					allwraps.hide();
+					y.show();
+				}
+
+			});
+
+
+		</script>
+
+	<!-- End Document
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	</body>
+</html>

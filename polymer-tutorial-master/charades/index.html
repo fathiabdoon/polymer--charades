@@ -1,336 +1,64 @@
-
-<!--
-    @license
-    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-    Code distributed by Google as part of the polymer project is also
-    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <!doctype html>
 <html>
+
 <head>
-  <title>core-animated-pages</title>
-  <script src="../components/webcomponentsjs/webcomponents.js"></script>
+	<title>charades</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+	<script href="components/webcomponentsjs/webcomponents.js"></script>
+	<link rel="import" href="charades-game.html">
 
-  <link href="../components/core-icons/av-icons.html" rel="import">
-  <link href="../components/paper-fab/paper-fab.html" rel="import">
-
-  <link href="../components/core-animated-pages/core-animated-pages.html" rel="import">
-  <link href="../components/core-animated-pages/transitions/slide-up.html" rel="import">
-  <link href="../components/core-animated-pages/transitions/list-cascade.html" rel="import">
-
-  <link href="../components/paper-button/paper-button.html" rel="import">
-  <link href="../components/paper-input/paper-input.html" rel="import">
-<!--   <link href="../components/paper-dropdown-menu/paper-dropdown-menu.html" rel="import"> -->
-  
-
-<!--   <link href="../components/core-menu/core-menu.html" rel="import">
-  <link href="../components/paper-dropdown/paper-dropdown.html" rel="import">
-  <link href="../components/paper-item/paper-item.html" rel="import"> -->
-
-  <!-- <link href="paper-dropdown-menu.html" rel="import"> -->
-
-
-  <style>
-    body {
-      font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      margin: 0;
-      background: #f1f1f1;
+	<style>
+	body{
+		color: #333;
+		font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		margin: 0;
+		background: #f1f1f1;
     }
+	charades-game {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+	}
+	</style>
 
-    charades-game {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-    }
-  </style>
 </head>
+
 <body>
 
-  <polymer-element name="charades-game">
-  <template>
-
-    <style>
-      core-animated-pages {
-        height: 100%;
-      }
-
-      .container{
-        background-color: #ffff8d;
-      }
-
-      section {
-        overflow: hidden;
-      }
-
-      .fab {
-        position: absolute;
-        fill: #fff;
-      }
-
-      .fab-0 {
-        bottom: 50px;
-        right: 24px;
-      }
-
-      .fab-1 {
-        top: 210px;
-        right: 24px;
-      }
-
-      paper-fab {
-        background-color: #ff4081;
-      }
-
-      .content {
-        background-color: #ffff8d;
-      }
-
-      /*.top-image {
-        background: url(quiz1-intro.png);
-        height: 287px;
-        width: 202px;
-      }*/
-
-      .top {
-        box-sizing: border-box;
-        position: relative;
-        height: 80px;
-        background-color: #ffeb3b;
-        padding: 24px;
-        color: #fff;
-        font-size: 32px;
-      }
-
-      .title {
-        box-sizing: border-box;
-        height: 240px;
-        position: relative;
-        color: #fff;
-        padding: 48px;
-        font-size: 48px;
-      }
-
-      .title.categories {
-        background-color: #00bbd3;
-        margin-bottom: 2px;
-      }
-
-      .title.questions {
-        background-color: #ffeb3b;
-      }
-
-      .middle {
-        background-color: #fafafa;
-        color: #3f3f3f;
-        padding: 24px 48px;
-        font-size: 24px;
-        line-height: 1.5;
-      }
-
-      .footer {
-        height: 80px;
-      }
-
-      .avatar {
-        height: 80px;
-        width: 80px;
-        background-color: #ff80ab;
-      }
-
-      .footer-right, .score {
-        border-top: 1px solid #ccc;
-        background-color: #fff;
-        padding: 30px;
-      }
-
-      .tile {
-        box-sizing: border-box;
-        float: left;
-        height: 200px;
-        width: 49%;
-        margin: 3px;
-      }
-
-      /*body{
-        display: none
-      }*/
-
-      .tile-bottom {
-        padding: 8px;
-        color: #fff;
-      }
-
-      paper-button{
-        margin: 10px;
-      }
-
-      .white-text{
-        color: #fff;
-      }
-    </style>
-
-    
-
-    <core-animated-pages selected="{{page}}" transitions="hero-transition slide-up slide-down cross-fade list-cascade" on-core-animated-pages-transition-end="{{complete}}">
-
-      <section layout vertical>
-
-        <div class="title categories" slide-down>
-          <span>{{x_title}}</span>
-        </div>
-
-        <div layout vertical>
-
-            <paper-button raised hero-id="create-new-game" hero on-tap="{{transition}}">{{x_create_game}}</paper-button>
-            <paper-button raised>{{x_join_game}}</paper-button>
-
-        </div>
+	<charades-game page="1">
+		<new-game-form></new-game-form>
+		<join-game-form></join-game-form>
+	</charades-game>
+	<!-- <new-game-form username="username " ></new-game-form> -->
 
 
-       <!--  <div class="tiles-container">
-          <div class="tile" hero-id="General-image" hero style="background-color:#ffff8d;" layout vertical on-tap="{{transition}}">
-            <div class="tile-top" flex>asdasd</div>
-            <div class="tile-bottom" hero-id="footer" hero style="background-color:#ffeb3b;">
-              General Knowledge
-            </div>
-          </div>
-        </div> -->
 
-      </section>
+<script>
+	
+	var game = document.querySelector('charades-game');
+	var new_game_form = document.querySelector('new-game-form');
+	var join_game_form = document.querySelector('join-game-form');
 
+	//game.page = 1;
 
-      <section layout vertical >
-        <div class="content"  hero-id="create-new-game"  hero flex layout vertical >
-          <div class="top">{{x_create_game}}</div>
-          <div flex layout vertical >
-<!-- 
-            <div>
-              <paper-input label="{{x_username}}" floatingLabel="true"></paper-input>
-            </div>
-            <div>
-              <label for="numberofpeople">Number of people playing</label>
-              <select>
-                  <template repeat="{{i in x_players}}">
-                    <option>{{i}}</option>
-                  </template>
-              </select>
-            </div>
-            <div>
-              <label for="timeperperson">Time per person</label>
-              <select>
-                  <template repeat="{{i in x_timeperperson}}">
-                    <option>{{i}}</option>
-                  </template>
-              </select>
-            </div>
-            <div>
-              <label for="newgroupteamcolor">Pick your team color</label>
-              <select class="u-full-width" id="newgroupteamcolor" class="teamcolors">
-                <option>red</option>
-                <option>green</option>
-                <option>blue</option>
-                <option>purple</option>
-                <option>yellow</option>
-                <option>orange</option>
-                <option>cyan</option>
-              </select>
-            </div> 
--->
-          </div> 
-        </div>
-        <!-- <div class="bottom" hero-id="footer" hero cross-fade>
-          <span cross-fade>General Knowledge</span>
-        </div> -->
-      </section>
+	new_game_form.addEventListener('goback', function() {
+		game.page = 0;
+  	});
 
-<!--       <section layout vertical>
+	new_game_form.addEventListener('teamcolor', function(e, d) {
+		game.teamcolor = e.detail.color;
+		//console.log(e.detail.color);
+  	});
 
-        <div class="top" hero-id="General-image" hero flex layout horizontal center center-justified>
-          <div class="top-image" cross-fade></div>
-        </div>
-        <div class="bottom" hero-id="footer" hero cross-fade>
-          <span cross-fade>General Knowledge</span>
-        </div>
-        <div class="fab fab-0" hero-id="fab" hero>
-          <paper-fab icon="av:play-arrow" on-tap="{{transition}}" hero></paper-fab>
-        </div>
-      </section> -->
+	join_game_form.addEventListener('goback', function() {
+		game.page = 0;
+  	});
 
-<!--       <section layout vertical>
+</script>
 
-        <div class="tall-toolbar questions" hero-id="Leaderboard-image" hero flex layout horizontal center center-justified>
-          <span cross-fade>Question here</span>
-        </div>
-        <div class="fab fab-1" hero-id="fab" hero>
-          <paper-fab icon="av:play-arrow" on-tap="{{transition}}" hero></paper-fab>
-        </div>
-
-        <div flex class="middle" slide-up list-cascade>
-          <p>Option 1</p>
-          <p>Option 2</p>
-          <p>Option 3</p>
-          <p>Option 4</p>
-          <p>Option 5</p>
-        </div>
-
-        <div class="footer" layout horizontal slide-up>
-          <div class="avatar"></div>
-          <div class="footer-right" flex>
-            some text here
-          </div>
-          <div class="score">
-            32 pts
-          </div>
-        </div>
-
-      </section> -->
-
-    </core-animated-pages>
-
-  </template>
-  <script>
-
-    Polymer('charades-game', {
-
-      x_username: "username",
-      x_title: "charades game for the mo foos",
-      x_create_game: "create a new game",
-      x_join_game: "join a game",
-      x_players: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-      x_timeperperson: [1, 2, 3, 4, 5, 6],
-
-      page: 0,
-
-      ready: function() {
-        //this.numberOfPlayers();
-      }, 
-
-      
-
-
-      transition: function(e) {
-        //alert(this.page);
-        if (this.page === 2) {
-          this.page = 0;
-        } else {
-          this.page += 1;
-        }
-      }
-
-    });
-
-  </script>
-  </polymer-element>
-
-  <charades-game></charades-game>
-
-  
-  
 </body>
+
 </html>
