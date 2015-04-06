@@ -1,0 +1,49 @@
+<link rel="import" href="components/polymer/polymer.html">
+<link href="components/core-menu/core-menu.html" rel="import">
+<link href="components/paper-item/paper-item.html" rel="import">
+
+
+
+<polymer-element name="waiting-room" >
+  <template>
+    <style>
+    	#container{
+    		/*background: red*/
+    		color: #fff
+    	}
+    	#container  center, #container  div{
+    		margin: 15px;
+    	}
+    	paper-button{
+      		background-color: #00bbd3;
+      		text-transform: lowercase;
+      		margin: 5px;
+      	}
+      	.save_btn{
+      		background: #000;
+      		padding: 10px;
+      	}
+      	.red{
+      		background: #ff8a80;
+      	}
+    </style>
+
+    <div id="container" class=""> <!-- horizontal layout start slide-up list-cascade -->
+      {{group}}
+      <template repeat="{{i in players}}">
+        <p>{{i}}</p>
+      </template>
+    </div>
+
+    
+
+  </template>
+  <script>
+    Polymer( 'waiting-room', {
+        players: [],
+        playersChanged: function(){
+          //console.log("playersChanged");
+        }
+    });
+  </script>
+</polymer-element>

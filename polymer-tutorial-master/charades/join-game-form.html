@@ -4,40 +4,70 @@
 <polymer-element name="join-game-form" >
   <template>
     <style>
-    	.container{
-    		/*background: red*/
-    	}
-    	.container  div{
-    		margin: 15px;
-    	}
+      #container{
+        /*background: red*/
+        color: #fff
+      }
+      #container  center, #container  div{
+        margin: 15px;
+      }
+      paper-button{
+          background-color: #00bbd3;
+          text-transform: lowercase;
+          margin: 5px;
+        }
+        .save_btn{
+          background: #000;
+          padding: 10px;
+        }
+        .red{
+          background: #ff8a80;
+        }
     </style>
 
 
 
-    <div class="container"  horizontal layout start slide-up list-cascade>
 
-    	<!-- <div>
-    		<paper-fab icon="arrow-back" on-tap="{{backTap}}" hero></paper-fab>
-    	</div> -->
 
-    	<div  vertical layout  end>
-	    	<div>
-	    		<paper-input label="{{x_username}}" floatingLabel="true"></paper-input>
-	    	</div>
-			<div>
-				<label for="newgroupteamcolor">Pick your team color</label>
-				<select class="u-full-width" id="newgroupteamcolor" class="teamcolors">
-	              <template repeat="{{i in colors}}">
-	                <option>{{i}}</option>
-	              </template>
-				</select>
-			</div>
-			<div>
-				<paper-button raised>{{x_join_game_save}}</paper-button>
-			</div>
-		</div>
+
+
+
+
+
+
+    <div id="container" class=""> <!-- horizontal layout start slide-up list-cascade -->
+
+
+      <div layout vertical center ><!-- style="background:red; margin:0" -->
+
+        <div style="margin-top:-10px">
+          <paper-input label="{{x_username}}" id="username" floatingLabel="true"></paper-input>
+        </div>
+
+        <div style="margin-top:-10px">
+          <paper-input label="{{x_groupcode}}" id="groupcode" value="{{groupcode}}" floatingLabel="true"></paper-input>
+        </div>
+
+        <center>
+          Pick your team color<br/>
+          <select  id="teamcolor" class="teamcolors" on-change="{{teamcolorpicked}}">
+            <option></option>
+            <template repeat="{{i in colors}}">
+              <option>{{i}}</option>
+            </template>
+          </select>
+        </center>
+      
+        <div>
+          <paper-button raised class="save_btn" id="save_btn" on-click="{{joingame}}">{{x_join_game_save}}</paper-button>
+        </div>
+
+      </div>
 
     </div>
+
+
+
 
     
 
@@ -46,11 +76,49 @@
   Polymer('join-game-form', {
       colors: ["red", "green", "blue", "purple", "yellow", "orange", "cyan"],
       x_join_game_save: "join game",
+      x_groupcode: "group code",
       x_username: "username",
+      groupcode: "",
+
+      ready: function(){
+        this.$.username.value = "aziza";
+        this.$.teamcolor.value = "red";
+      },
       backTap: function(e,d,s) {
       	  /*s.templateInstance.model.goback = "efg";*/
-      	  s.templateInstance.model.fire("goback");
+      	  s.templateInstance.model.fire("go:back");
           /*console.log(s.templateInstance.model.goback);*/
+      },
+      teamcolorpicked:function(e,d,s) {
+        this.fire("team:color", {color: s.value});
+      },
+      joingame:function(e){
+        if(this.$.username.value.trim().length == 0)
+        { 
+          this.fire("error", {msg: "username can not be empty"});
+          return;
+        }
+
+        if(this.$.groupcode.value.trim().length == 0)
+        { 
+          this.fire("error", {msg: "please add or scan group code"});
+          return;
+        }
+
+        if(this.$.teamcolor.value.trim().length == 0)
+        { 
+          this.fire("error", {msg: "pick a team color (this will be your team)"});
+          return;
+        }
+
+        var joingame = {
+                username:     this.$.username.value.trim().toLowerCase(),
+                groupcode:    this.$.groupcode.value,
+                teamcolor:    this.$.teamcolor.value
+        };
+
+        this.fire("join:group", joingame);
+
       }
   });
   </script>

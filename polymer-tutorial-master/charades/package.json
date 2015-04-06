@@ -1,7 +1,7 @@
 {
-  "name": "chat",
-  "version": "0.0.1",
-  "description": "testing chat",
+  "name": "charades",
+  "version": "0.0.2",
+  "description": "polymer + charades",
   "dependencies": {
     "socket.io":"1.3.4",
     "express": "4.12.0"

@@ -272,10 +272,11 @@ element.
     },
 
     complete: function(xhr) {
+      var x = this.evalResponse(xhr);
       if (xhr === this.activeRequest) {
         this.loading = false;
       }
-      this.fire('core-complete', {response: xhr.status, xhr: xhr});
+      this.fire('core-complete', {response: xhr.status, xhr: xhr, r: x});
     },
 
     evalResponse: function(xhr) {

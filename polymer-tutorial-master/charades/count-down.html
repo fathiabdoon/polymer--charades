@@ -1,0 +1,70 @@
+<link rel="import" href="components/polymer/polymer.html">
+
+<polymer-element name="count-down" attributes="start">
+    <template>
+    	<style>
+    		span{
+    			color: #fff;
+    			font-size: 50px;
+    		}
+    	</style>
+        <span>{{start}}</span>
+    </template>
+    <script>
+    Polymer('count-down', {
+
+        //set default
+        /*start: {{start}},*/
+        start: 30,
+
+
+        // Fires when the "<polymer-element>" has been fully prepared
+        startCountDown: function() {
+            var intervalo,
+                count = this.start,
+                reset = this.start;
+
+            intervalo = setInterval(function() {
+                this.start = --count;
+                if (!count) {
+                    clearInterval(intervalo);
+                    this.start = reset;
+                    return this.fire('time:finished');
+                }
+
+            }.bind(this), 1000)
+
+
+
+/*
+            intervalo = setInterval(function() {
+            	//console.log("" + new Date() + "  " + currentTime_plus_seconds);
+            	//if(currentTime_plus_seconds == new Date())
+            	//{
+            	//	console.log("-- " + new Date() + "  " + currentTime_plus_seconds);
+            	//}	
+
+            	var s = (new Date()).getSeconds();
+            	console.log(s);
+            	if(s != t)
+            	{
+            		
+            		if(t != -1)
+            			this.start = --count;
+            		t = s;
+            	}
+
+                if (!count) {
+                    clearInterval(intervalo);
+                    return this.fire('count-down-complete');
+                }
+
+            }.bind(this), 0)*/
+
+            
+        }
+
+    });
+    </script>
+
+</polymer-element>

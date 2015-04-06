@@ -1,0 +1,128 @@
+<link rel="import" href="components/polymer/polymer.html">
+<link href="components/core-menu/core-menu.html" rel="import">
+<link href="components/paper-item/paper-item.html" rel="import">
+ <link rel="import" href="count-down.html">
+
+
+
+<polymer-element name="playing-room">
+  <template>
+    <style>
+        paper-button{
+          text-transform: capitalize;
+          background-color: #f1f1f1;
+          color: #fff;
+        }
+        #startbtn{
+          background-color: #f1f1f1;
+          color: #333;
+        }
+        #passbtn{
+          background-color: red;
+          position: absolute;
+          bottom: 5px;
+          left: 0;
+        }
+        #gotitbtn{
+          background-color: green;
+          position: absolute;
+          bottom: 5px;
+          right: 0;
+        }
+        .hidden{
+          display: none;
+        }
+        .show{
+          display: block;
+        }
+        div{
+          color: #fff;
+          /*display: none;*/
+        }
+
+    </style>
+    <paper-button raised hero id="startbtn" hero-id="create-new-game" hidden?="{{hidestartbtn}}" on-tap="{{startTapped}}">start</paper-button> 
+    <div id="readysteadygo"  hidden?="{{readycount}}">{{readySteadyGo}}</div>
+    <div id="word">{{word}}</div>
+
+    <div hidden?="{{showcounter}}">
+      <content select="count-down"></content> 
+    </div>
+
+
+    <paper-button raised hero id="passbtn" hero-id="pass"   hidden?="{{hideotherbtns}}" on-tap="{{passTapped}}">pass</paper-button> 
+    <paper-button raised hero id="gotitbtn" hero-id="gotit" hidden?="{{hideotherbtns}}" on-tap="{{goTapped}}">got it</paper-button> 
+    
+
+  </template>
+  <script>
+    Polymer( 'playing-room', {
+
+        /*start: false,*/
+        showcounter: false, 
+        hidestartbtn: false,
+        hideotherbtns: true,
+        readycount: true,
+        
+        readySteadyGo: 3,
+
+        //words: [],
+        word: "",
+
+        ready: function(){
+          //this.fire("game-count-down", {count: 40});
+        },
+
+
+        /*wordsChanged: function(){
+          console.log("Asdasd");
+        },*/
+        /*startChanged: function(){
+          // /console.log("start-btn-clicked ");
+          return this.fire("start-btn-clicked");
+        },*/
+
+        startTapped: function(){
+
+           // this.start = true;
+
+            this.fire("click:start");
+
+            //this.$.startbtn.setAttribute("class", "hidden");
+            //this.$.readysteadygo.setAttribute("class", "show");
+           
+            var intervalo, 
+                count = this.readySteadyGo, 
+                reset = this.readySteadyGo;
+
+            intervalo = setInterval(function() {
+                this.readySteadyGo = --count;
+                if (!count) {
+                    clearInterval(intervalo);
+                    this.readySteadyGo = reset;
+                    return this.fire('after: ready steady go');
+                }
+
+            }.bind(this), 1000); 
+        },
+
+        goTapped: function(){
+          this.fire("click: next word", {answered: true});
+        },
+
+        passTapped: function(){
+          this.fire("click: next word", {answered: false});
+        },
+
+        newWord: function(data){
+          this.word = data;
+          //this.hideotherbtns = false;
+          //console.log("wordChange = " + data);
+        }
+        /*wordChanged: function(e){
+          
+        }*/
+
+    });
+  </script>
+</polymer-element>
