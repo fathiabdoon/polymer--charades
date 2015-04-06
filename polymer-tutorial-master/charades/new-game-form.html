@@ -24,6 +24,10 @@
       	.red{
       		background: #ff8a80;
       	}
+        input{
+          height: 20px;
+          width: 150px
+        }
 
     </style>
 
@@ -34,7 +38,8 @@
 
     	<div layout vertical center ><!-- style="background:red; margin:0" -->
 	    	<div style="margin-top:-10px">
-	    		<paper-input label="{{x_username}}" id="username" floatingLabel="true"></paper-input>
+	    		<!-- <paper-input label="{{x_username}}" id="username" floatingLabel="true"></paper-input> -->
+          <input type="text" value="" placeholder="{{x_username}}" id="username" />
 	    	</div>
 	    	<center>
 	    		Number of players {{noofpayers}} <br/>
@@ -73,9 +78,9 @@
 
       ready: function(){
         //testing
-      	this.$.username.value = "fathi";
-      	this.$.teamcolor.value = "red";
-      	this.fire("team:color", {color: this.$.teamcolor.value});
+      	//this.$.username.value = "fathi";
+      	//this.$.teamcolor.value = "red";
+      	//this.fire("team:color", {color: this.$.teamcolor.value});
 
       },
      /* numberofplayersChanged: function(oldVal, newVal) {
@@ -87,7 +92,7 @@
           /*console.log(s.templateInstance.model.goback);*/
       },
       teamcolorpicked:function(e,d,s) {
-      	this.fire("teamcolor", {color: s.value});
+      	this.fire("team:color", {color: s.value});
       	//console.log(this.$.fire("asd"));
       	//d.templateInstance.model.teamcolor = "asdasd";//c.value;
       	//console.log(this.$.container.setAttribute("class", "red"));

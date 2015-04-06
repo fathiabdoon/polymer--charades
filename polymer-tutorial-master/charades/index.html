@@ -1,11 +1,10 @@
 <!doctype html>
 <html>
-
 <head>
-	<title>charades</title>
-	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-	<script href="components/webcomponentsjs/webcomponents.js"></script>
-	<link href="components/core-ajax/core-ajax.html" rel="import">
+  <title>core-animated-pages</title>
+
+  <script src="components/webcomponentsjs/webcomponents.js"></script>
+  <link href="components/core-ajax/core-ajax.html" rel="import">
 	<link rel="import" href="charades-game.html">
 
 	<style>
@@ -15,32 +14,34 @@
 		margin: 0;
 		background: #f1f1f1;
     }
-	charades-game {
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
+	charades-game{
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
 	}
 	count-down{
 		position: fixed;
 		top: 5px;
 		right: 5px;
       }
+
+
 	</style>
 
 </head>
 
 <body>
 
-	<charades-game page="0">
+	<charades-game page="2">
 
 		<new-game-form></new-game-form>
 		<join-game-form></join-game-form>
 		<waiting-room></waiting-room>
 		<playing-room>
-			<count-down start="3" ></count-down>
+			<count-down start="35" ></count-down>
 		</playing-room>
 		
 
@@ -216,9 +217,9 @@
 
 
   	//this is temp // testing
-  	socket.on("group-code-from-create-new", function(e){
+/*  	socket.on("group-code-from-create-new", function(e){
  		join_game_form.groupcode = e.c;
- 	});
+ 	});*/
 
 
   	socket.on("hide buttons", function(data){

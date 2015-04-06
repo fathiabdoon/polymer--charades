@@ -23,15 +23,11 @@
         .red{
           background: #ff8a80;
         }
+        input{
+          height: 20px;
+          width: 150px
+        }
     </style>
-
-
-
-
-
-
-
-
 
 
 
@@ -40,12 +36,16 @@
 
       <div layout vertical center ><!-- style="background:red; margin:0" -->
 
-        <div style="margin-top:-10px">
-          <paper-input label="{{x_username}}" id="username" floatingLabel="true"></paper-input>
+        <!-- <div style="margin-top:-10px"> -->
+        <div>
+          <!-- <paper-input label="{{x_username}}" id="username" floatingLabel="true"></paper-input> -->
+           <input type="text" value="" placeholder="{{x_username}}" id="username" />
         </div>
 
-        <div style="margin-top:-10px">
-          <paper-input label="{{x_groupcode}}" id="groupcode" value="{{groupcode}}" floatingLabel="true"></paper-input>
+        <!-- <div style="margin-top:-10px"> -->
+        <div>
+          <!-- <paper-input label="{{x_groupcode}}" id="groupcode" value="{{groupcode}}" floatingLabel="true"></paper-input> -->
+          <input type="text" value="{{groupcode}}" placeholder="{{x_groupcode}}" id="groupcode" />
         </div>
 
         <center>
@@ -81,8 +81,8 @@
       groupcode: "",
 
       ready: function(){
-        this.$.username.value = "aziza";
-        this.$.teamcolor.value = "red";
+        //this.$.username.value = "aziza";
+        //this.$.teamcolor.value = "red";
       },
       backTap: function(e,d,s) {
       	  /*s.templateInstance.model.goback = "efg";*/

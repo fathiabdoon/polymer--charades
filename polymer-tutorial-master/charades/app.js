@@ -9,7 +9,7 @@ var express 	= require('express.io'),
 	flag		= {}; //this will be a map with key as username and value of sockets
 	//scores		= {};
 
-var temp = {};
+//var temp = {};
 
 
 
@@ -18,7 +18,7 @@ io.sockets.on('connection', function(socket) {
 	console.log("connection established...");
 	//console.log(socket.id);
 
-	socket.emit("group-code-from-create-new", {c: temp[0]});
+	//socket.emit("group-code-from-create-new", {c: temp[0]});
 
 	socket.on("create:group", function(data){
 
@@ -46,7 +46,7 @@ io.sockets.on('connection', function(socket) {
 			//scores[socket.id]		= {socket.teamcolor: ""};
 
 			//temp
-			temp[0] = socket.id;
+			//temp[0] = socket.id;
 
 			io.to(socket.group).emit("wait:room", {players: [socket.username], numberofplayers: socket.numberofplayers, group: socket.group});
 
