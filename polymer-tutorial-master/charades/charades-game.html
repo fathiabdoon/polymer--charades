@@ -196,7 +196,7 @@
                 {{x_waiting_room}}
                 <core-icon class="core-icon" id="socialpersonicon" icon="{{person_icon}}"></core-icon>  
             </h2>
-            <qr-code data="http://localhost:3000/#{{group}}"></qr-code><br/>
+            <qr-code data="{{url}}#{{group}}"></qr-code><br/>
             {{group}}
             <content select="waiting-room" ></content>
           </div> 
@@ -253,6 +253,7 @@
       toastmsg: "",
       group: "",
       scores: "",
+      url: "http://localhost:3000/",
 
       page: 0,
 

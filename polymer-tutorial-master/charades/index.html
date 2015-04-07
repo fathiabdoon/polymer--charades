@@ -6,56 +6,46 @@
   <script src="components/webcomponentsjs/webcomponents.js"></script>
   <link href="components/core-ajax/core-ajax.html" rel="import">
 	<link rel="import" href="charades-game.html">
-
 	<style>
-	body{
-		color: #333;
-		font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		margin: 0;
-		background: #f1f1f1;
-    }
-	charades-game{
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-	}
-	count-down{
-		position: fixed;
-		top: 5px;
-		right: 5px;
-      }
-
-
+		body{
+			color: #333;
+			font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			margin: 0;
+			background: #f1f1f1;
+	    }
+		charades-game{
+	      display: block;
+	      position: absolute;
+	      top: 0;
+	      left: 0;
+	      bottom: 0;
+	      right: 0;
+		}
+		count-down{
+			position: fixed;
+			top: 5px;
+			right: 5px;
+	      }
 	</style>
-
 </head>
 
 <body>
 
-	<charades-game page="2">
-
+	<charades-game page="0">
 		<new-game-form></new-game-form>
 		<join-game-form></join-game-form>
 		<waiting-room></waiting-room>
 		<playing-room>
 			<count-down start="35" ></count-down>
 		</playing-room>
-		
-
 		<paper-toast  id="toast" text=""></paper-toast>
 	</charades-game>
 
-
 	<core-ajax  url="http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=-1&maxDictionaryCount=-1&minLength=-1&maxLength=-1&limit=20&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5" params=''  handleAs="json"></core-ajax>
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 
-	//console.log();
 	var socket 			= io.connect();
 	var game 			= document.querySelector('charades-game');
 	var new_game_form 	= document.querySelector('new-game-form');
@@ -69,6 +59,18 @@
 	var flag 			= false;
 	var got_the_word	= false;
 	var score 			= 0;
+	game.url 			= document.URL;
+	
+	setTimeout(function(){
+
+		if(window.location.hash){
+	      var hash 					= window.location.hash.substring(1);
+	      join_game_form.groupcode 	= hash;
+	      game.page 				= 2
+	      window.location.hash 		= "";
+	  	}
+
+	}, 100);	
 
 	ajax.addEventListener('core-response', function(e) {
 		var wordList 	= e.detail.response;
@@ -95,7 +97,6 @@
 		words 			= w;
 		x 				= 0;
 
-		//console.log(words);
 		socket.emit("show word to everyone", {word: words[x], timer: flag});
   		x++;
   	});
@@ -143,9 +144,6 @@
 
 
  	count_down.addEventListener('time:finished', function(e) {
-		//console.log("count down finished");
-
-
   		//console.log("save score: " + score);
   		socket.emit("save:score", {score: score});
   		score = 0;
@@ -182,7 +180,6 @@
 
 
   	playing_room.addEventListener('after: ready steady go', function(e) {
-
 		//console.log("time to show word");
 		flag = true;
 		reset();
@@ -232,8 +229,8 @@
   		}
   	});
 
+
   	socket.on("the word", function(data){
-  		//console.log("client- new-word");
 
   		//hide everyones buttons
   		playing_room.hideotherbtns = true;
